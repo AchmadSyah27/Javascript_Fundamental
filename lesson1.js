@@ -16,3 +16,10 @@ console.log(age);
 //Constants
 const occupation = "QA Engineer";
 console.log(occupation);
+
+//Data type
+var middleName = "Syah"; //single quote-> string
+var ageOfBorther = 25; //number
+var isMarried = true; //boolean
+var yearMarried = null; //null
+var numberOfCars = undefined; //
