@@ -25,11 +25,19 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    //Membuka browser dengan window maximize
+    launchOptions: {
+      args: ['--start-maximized'], 
+    },
+
+    //Input value null untuk viewport supaya tidak menimpa command --start-maximized
+    viewport: null,
+
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on-first-retry'
   },
 
   /* Configure projects for major browsers */
@@ -37,16 +45,19 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      viewport: null,
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      viewport: null,
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      viewport: null,
     },
 
     /* Test against mobile viewports. */
