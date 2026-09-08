@@ -34,3 +34,8 @@ test('Locator Syntax Rule', async ({ page }) => {
     //Find by exact text match
     page.locator(':text-is("Using the Grid")')
 })
+
+test('User-visible locators', async ({ page }) => {
+    //Find by object type
+    await page.getByRole('button', { name: 'Sign in' }).first().click()
+})
