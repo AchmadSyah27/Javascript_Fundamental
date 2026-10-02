@@ -38,4 +38,44 @@ test('Locator Syntax Rule', async ({ page }) => {
 test('User-visible locators', async ({ page }) => {
     //Find by object type
     await page.getByRole('button', { name: 'Sign in' }).first().click()
+
+    await page.getByRole('textbox', { name: 'Email' }).first().fill('test@example.com')
+
+    await page.getByLabel('email').first().fill('test123@example.com')
+
+    await page.getByPlaceholder('Jane Doe').first().fill('Artem Bondar')
+
+    await page.getByText('Submit').first().click()
+
+    await page.getByTestId('inputEmail1').fill('testandrian@example.com')
+
+    await page.getByTitle('IoT Dashboard').click()
+})
+
+test('Locating child elements', async ({ page }) => {
+    await page.locator('nb-card').locator('nb-radio-group').locator(':text-is("Option 1")').click()
+
+    await page.locator('nb-card nb-radio-group :text-is("Option 2")').click()
+
+    await page.locator('nb-card').getByRole('button', { name: 'Sign in' }).first().click()
+
+    await page.locator('nb-card').nth(3).getByRole('button').click()
+})
+
+test('Locating  parent elements', async ({ page }) => {
+    //Melakukan klik pada button sign in yang berada di dalam card dengan text "Using the Grid"
+    await page.locator('nb-card', {hasText: 'Using the Grid'}).getByRole('button').click()
+
+    await page.locator('nb-card', {has: page.locator('#inputEmail1')}).getByRole('button').click()
+
+    await page.locator('nb-card').filter({hasText: 'Using the Grid'}).getByRole('button').click()
+
+    await page.locator('nb-card')
+    .filter({has: page.locator('nb-checkbox')})
+    .filter({hasText: 'Sign in'})
+    .getByLabel('Email')
+    .fill('andrian.soedjadi18@gmail.com')
+
+    //Naik satu element menggunakan xpath locator ('..')
+    await page.getByText('Using the Grid').locator('..').getByRole('button').click()
 })
