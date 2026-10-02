@@ -63,18 +63,19 @@ test('Locating child elements', async ({ page }) => {
 })
 
 test('Locating  parent elements', async ({ page }) => {
-    //await page.locator('nb-card', {hasText: 'Using the Grid'}).getByRole('button').click()
+    //Melakukan klik pada button sign in yang berada di dalam card dengan text "Using the Grid"
+    await page.locator('nb-card', {hasText: 'Using the Grid'}).getByRole('button').click()
 
-    //await page.locator('nb-card', {has: page.locator('#inputEmail1')}).getByRole('button').click()
+    await page.locator('nb-card', {has: page.locator('#inputEmail1')}).getByRole('button').click()
 
-    //await page.locator('nb-card').filter({hasText: 'Using the Grid'}).getByRole('button').click()
+    await page.locator('nb-card').filter({hasText: 'Using the Grid'}).getByRole('button').click()
 
-    // await page.locator('nb-card')
-    // .filter({has: page.locator('nb-checkbox')})
-    // .filter({hasText: 'Sign in'})
-    // .getByLabel('Email')
-    // .fill('andrian.soedjadi18@gmail.com')
+    await page.locator('nb-card')
+    .filter({has: page.locator('nb-checkbox')})
+    .filter({hasText: 'Sign in'})
+    .getByLabel('Email')
+    .fill('andrian.soedjadi18@gmail.com')
 
-    //Naik satu element
+    //Naik satu element menggunakan xpath locator ('..')
     await page.getByText('Using the Grid').locator('..').getByRole('button').click()
 })
