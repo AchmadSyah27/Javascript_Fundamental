@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('https://playground.bondaracademy.com/');
@@ -78,4 +78,23 @@ test('Locating  parent elements', async ({ page }) => {
 
     //Naik satu element menggunakan xpath locator ('..')
     await page.getByText('Using the Grid').locator('..').getByRole('button').click()
+})
+
+test('await Reusing locators', async ({ page }) => {
+    await page.locator('nb-card', {hasText: 'Basic form'}).getByLabel('Email').fill('andrian.soedjadi18@gmail.com')
+    await page.locator('nb-card', {hasText: 'Basic form'}).getByLabel('Password').fill('Playwright99')
+    await page.locator('nb-card', {hasText: 'Basic form'}).locator('nb-checkbox').click()
+    await page.locator('nb-card', {hasText: 'Basic form'}).getByRole('button').click()
+})
+
+test('await Reusing locators - Evo', async ({ page }) => {
+    const basicForm = await page.locator('nb-card', {hasText: 'Basic form'})
+    const emailInputField = await basicForm.getByLabel('Email')
+
+    await basicForm.getByLabel('Email').fill('andrian.soedjadi18@gmail.com')
+    await basicForm.getByLabel('Password').fill('Playwright99')
+    await basicForm.locator('nb-checkbox').click()
+    await basicForm.getByRole('button').click()
+
+    await expect(emailInputField).toHaveValue('andrian.soedjadi18@gmail.com')
 })
