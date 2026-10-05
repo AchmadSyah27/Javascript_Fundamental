@@ -98,3 +98,28 @@ test('await Reusing locators - Evo', async ({ page }) => {
 
     await expect(emailInputField).toHaveValue('andrian.soedjadi18@gmail.com')
 })
+
+test('Extract value', async ({ page }) => {
+    //Extracting text
+    const basicForm = page.locator('nb-card', {hasText: 'Basic form'})
+    const submitButtonText = await basicForm.getByRole('button').textContent()
+    expect(submitButtonText).toEqual('Submit')
+
+    //Extracting multiple text values
+    const allRadioButtons = await page.locator('nb-radio').allTextContents()
+    console.log(allRadioButtons)
+
+    //Validating text values need comment above section before run
+    const ValidatingRadioButtons = await page.locator('nb-radio').allTextContents()
+    expect(ValidatingRadioButtons).toContain('Option 1')
+
+    //Extract input field value
+    const emailField = basicForm.getByRole('textbox', { name: 'Email' })
+    await emailField.fill('andrian.soedjadi18@gmail.com')
+    const emailFieldValue = await emailField.inputValue()
+    console.log(emailFieldValue)
+
+    //Extract attribute value placeholder
+    const emailPlaceholder = await emailField.getAttribute('placeholder')
+    console.log(emailPlaceholder)
+})
