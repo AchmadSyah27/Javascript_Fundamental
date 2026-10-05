@@ -123,3 +123,22 @@ test('Extract value', async ({ page }) => {
     const emailPlaceholder = await emailField.getAttribute('placeholder')
     console.log(emailPlaceholder)
 })
+
+test('Assertions', async ({ page }) => {
+    const basicForm = page.locator('nb-card', {hasText: 'Basic form'}).getByRole('button')
+
+    //Generic assertion
+    const value = 5
+    expect(value).toEqual(5)
+
+    const submitButtonText = await basicForm.textContent()
+    expect(submitButtonText).toEqual('Submit')
+
+
+    //Locator assertion, kalau tidak ketemu statusnya akan langsung failed
+    await expect(basicForm).toHaveText('Submit')
+
+    //Soft assertion, kalau tidak ketemu statusnya akan tetap pass
+    await expect.soft(basicForm).toHaveText('Submit')
+    await basicForm.click()
+})
