@@ -35,5 +35,19 @@ test.describe('Form Layout Page',() => {
 
     test('Radio button', async ({ page }) => {
         const usingTheGridForm = page.locator('nb-card', {hasText: 'Using the Grid'})
+
+        //Melakukan klik pada radio button option 1
+        await usingTheGridForm.getByLabel('Option 1').check({ force: true })
+
+        //Melakukan klik pada radio button option 2
+        await usingTheGridForm.getByLabel('radio', { name: 'Option 2' }).check({ force: true })
+
+        //Sample cara umum untuk verify sebuah radio button sudah tercheck atau belum tapi bukan cara yang benar karena tidak mengembalikan nilai true atau false
+        const radioStatus = await usingTheGridForm.getByRole('radio', { name: 'Option 2' }).isChecked()
+        expect(radioStatus).toBeTruthy()
+
+        //Cara untuk verify yang benar untuk verifikasi sebuah radio button sudah tercheck atau belum dan mengembalikan nilai true atau false
+        await expect(usingTheGridForm.getByRole('radio', { name: 'Option 2' })).toBeChecked()
+        await expect(usingTheGridForm.getByRole('radio', { name: 'Option 1' })).not.toBeChecked()
     })
 })
