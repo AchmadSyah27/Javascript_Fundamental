@@ -31,7 +31,6 @@ test.describe('Form Layout Page',() => {
 
         //assertion bisa menggunakan regex
         await expect(usingTheGridEmailInput).toHaveValue(/gmail.com/)
-    })
 
     test('Radio button', async ({ page }) => {
         const usingTheGridForm = page.locator('nb-card', {hasText: 'Using the Grid'})
@@ -50,4 +49,14 @@ test.describe('Form Layout Page',() => {
         await expect(usingTheGridForm.getByRole('radio', { name: 'Option 2' })).toBeChecked()
         await expect(usingTheGridForm.getByRole('radio', { name: 'Option 1' })).not.toBeChecked()
     })
+})
+
+    test('Checkbox', async ({ page }) => {
+        await page.getByText('Modal & Overlays').click();
+        await page.getByText('Toastr').click();
+
+        //Memastikan checkbox "Hide on click" sudah ter-checklist
+        await page.getByRole('checkbox', { name: 'Hide on click' }).check({ force: true })
+    })
+    
 })
