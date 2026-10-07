@@ -92,4 +92,46 @@ test.describe("Form Layout Page", () => {
 			await expect(box).toBeChecked();
 		}
 	});
+
+	test("Lists and dropdowns", async ({ page }) => {
+		await page.getByText("Modal & Overlays").click();
+		await page.getByText("Toastr").click();
+
+		//Melakukan klik pada dropdown list Toast type (Element ini adalah standart dropdown HTML)
+		await page
+			.locator(".form-group", { hasText: "Toast type" })
+			.getByRole("combobox")
+			.selectOption("info");
+		//Melakukan assertion untuk memastikan dropdown list Toast type sudah terpilih option info
+		await expect(page.getByRole("combobox")).toHaveValue("info");
+
+		//Dibawah ini adalah contoh untuk dropdown list yang custom dropdown,
+		//dropdown list yang dibuat menggunakan library tertentu (contoh: di dropdown Position)
+		await page
+			.locator(".form-group", { hasText: "Position:" })
+			.locator("nb-select")
+			.click();
+		//Cara pertama
+		// await page.getByRole("list").getByText("bottom-end").click();
+		//Cara kedua
+		await page.locator("nb-option", { hasText: "bottom-end" }).click();
+		//Setelah itu kita tambahkan untuk validasi melalui dropdown list yang dipilih
+		await expect(
+			page
+				.locator(".form-group", { hasText: "Position:" })
+				.locator("nb-select"),
+		).toHaveText("bottom-end");
+
+		//case jika kita perlu looping untuk select dari semua isi yang ada di dropdown list Position
+		const positionDropDownField = page
+			.locator(".form-group", { hasText: "Position:" })
+			.locator("nb-select");
+		await positionDropDownField.click();
+		const allListValues = await page.locator("nb-option").allTextContents();
+		for (const listValue of allListValues) {
+			await page.locator("nb-option", { hasText: listValue }).click();
+			await expect(positionDropDownField).toHaveText(listValue);
+			await positionDropDownField.click();
+		}
+	});
 });
