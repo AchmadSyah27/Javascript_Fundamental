@@ -142,3 +142,16 @@ test('Assertions', async ({ page }) => {
     await expect.soft(basicForm).toHaveText('Submit')
     await basicForm.click()
 })
+
+test('Generated Test', async ({ page }) => {
+    await page.goto('https://playground.bondaracademy.com/pages/iot-dashboard');
+    await page.getByRole('link', { name: 'Forms' }).click();
+    await page.getByRole('link', { name: 'Form Layouts' }).click();
+    await page.getByRole('textbox', { name: 'Jane Doe' }).click();
+    await page.getByRole('textbox', { name: 'Jane Doe' }).fill('Andrian soedjadi');
+    await page.locator('form').filter({ hasText: 'Remember meSubmit' }).getByPlaceholder('Email').click();
+    await page.locator('form').filter({ hasText: 'Remember meSubmit' }).getByPlaceholder('Email').fill('andrian.soedjadi18@gmail.com');
+    await page.locator('.custom-checkbox').first().click();
+    await page.locator('form').filter({ hasText: 'Remember meSubmit' }).getByRole('button').click();
+    await page.close();
+})
