@@ -134,4 +134,35 @@ test.describe("Form Layout Page", () => {
 			await positionDropDownField.click();
 		}
 	});
+
+    test("Tooltips", async ({ page }) => {
+        await page.getByText("Modal & Overlays").click();
+		await page.getByText("Tooltip").click();
+
+        //Melakukan hover pada tombol tooltip dan verify tooltop yang muncul sudah sesuai
+        await page.getByRole("button", { name: "Top" }).hover();
+        await expect(page.getByRole('tooltip')).toHaveText('This is a tooltip')
+    })
+
+    test("Dialog box", async ({ page }) => {
+        await page.getByText('Tables & Data').click()
+        await page.getByText('Smart Table').click()
+
+        //Case dibawah ini untuk melakukan hapus satu data di halaman smart table lalu
+        //Accept dialog box yang model-nya bawaan dari browser
+        //Pendekatannya memanggil callback function 
+        page.on('dialog', dialog => {
+            //Memastikan dialog box tampil
+            expect(dialog.message()).toEqual('Are you sure you want to delete?')
+
+            //Melakukan accept pada dialog box yang tampil dari model bawaan browser
+            dialog.accept()
+        })
+
+        //Melakukan klik pada icon delete untuk menghapus data
+        await page.locator('tr', {hasText: 'mdo@gmail.com'}).locator('.nb-trash').click()
+
+        //Memastikan data yang sudah dihapus tidak tampil di halaman smart table
+        await expect(page.locator('tr', {hasText: 'mdo@gmail.com'})).not.toBeVisible()
+    })
 });
