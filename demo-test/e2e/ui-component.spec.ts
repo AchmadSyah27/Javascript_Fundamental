@@ -165,4 +165,50 @@ test.describe("Form Layout Page", () => {
         //Memastikan data yang sudah dihapus tidak tampil di halaman smart table
         await expect(page.locator('tr', {hasText: 'mdo@gmail.com'})).not.toBeVisible()
     })
+
+    test("Web tables", async ({ page }) => {
+        await page.getByText('Tables & Data').click()
+        await page.getByText('Smart Table').click()
+
+        //Cara 1: handle table di halaman web
+        //Inisiasi data yang di ubah dengan alamat email twitter@outlook.com
+        const tableRowByEmail = page.getByRole('row', {name: 'twitter@outlook.com'})
+
+        //Melakukan klik icon edit
+        await tableRowByEmail.locator('.nb-edit').click()
+
+        //Ganti inputan dengan ubah age menjadi 35
+        await tableRowByEmail.getByPlaceholder('Age').fill('35')
+
+        //Melakukan klik pada icon checklist untuk menyimpan perubahan
+        await tableRowByEmail.locator('.nb-checkmark').click()
+
+        //Memastikan table age sudah berubah sesuai inputan
+        await expect(tableRowByEmail.locator('td').last()).toHaveText('35')
+
+
+		//Cara 2: get row by specific coloumn value
+		const tableRowById = page.getByRole('row').filter({has: page.getByRole('cell').nth(1).getByText('10')})
+		await tableRowById.locator('.nb-edit').click()
+		await page.locator('tbody').getByPlaceholder('E-mail').fill('test@test.com')
+		await page.locator('tbody').locator('.nb-checkmark').click()
+		await expect(tableRowById.locator('td').nth(5)).toHaveText('test@test.com')
+
+		//Cara 3: loop through table rows
+		const ages = ["20", "30", "40", "200"]
+
+		for (let age of ages){
+			await page.getByPlaceholder('Age').fill(age)
+
+			if(age == "200"){
+				await expect(page.locator('tbody')).toContainText('No Data Found')
+			}else{
+				const allTableRows = await page.locator('tbody tr').all()
+				for( let row of allTableRows){
+					await expect(row.locator('td').last()).toHaveText(age)
+				}
+			}
+		}
+
+	})
 });
