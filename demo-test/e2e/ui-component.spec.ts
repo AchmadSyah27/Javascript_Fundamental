@@ -213,4 +213,48 @@ test.describe("Form Layout Page", () => {
 		}
 
 	})
+
+	test('Date picker', async ({page}) => {
+		await page.getByText('Forms').click()
+		await page.getByText('Datepicker').click()
+
+		const calendarInputField = page.getByPlaceholder('Form Picker')
+		await calendarInputField.click()
+
+		//cara 1: untuk memilih tanggal
+		// await page.locator('.day-cell:not(.bounding-month)').getByText('15').click()
+
+		//cara 2: ketika element tanggal yang dipilih selain dari element tanggal 15
+		// await page.locator('.day-cell:not(.bounding-month)').getByText('2',{exact: true}).click()
+
+		//Lanjut, untuk verifikasi tanggal yang sudah di pilih
+		// await expect(calendarInputField).toHaveValue('Oct 2, 2026')
+
+		//Cara 3: handle tanggal dynamic
+		const date = new Date()
+		date.setDate(date.getDate()+5)
+		const expectedDay = date.getDate().toString()
+		const expectedMonth = date.toLocaleString('En-US', {month: 'short'})
+		const expectedMonthLong = date.toLocaleString('En-US', {month: 'long'})
+		const expectedYear = date.getFullYear()
+		const expectedDate = `${expectedMonth} ${expectedDay}, ${expectedYear}`
+
+		//Lanjut verifikasi untuk tanggal dynamic yang di set
+		// await page.locator('.day-cell:not(.bounding-month)').getByText(expectedDay,{exact: true}).click()
+		// await expect(calendarInputField).toHaveValue(expectedDate)
+
+		//Melakukan pilih tanggal, jika tanggal yang dipilih diluar dari bulan tersebut
+		let currentMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+		const expectedMontAndYear = `${expectedMonthLong} ${expectedYear}`
+		while(!currentMonthAndYear?.includes(expectedMontAndYear)){
+			//kalau tanggal yang dipilih tidak ada
+			//maka klik button next month pada calender yang sedang terbuka window-nya 
+			await page.locator('.next-month').click()
+			currentMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+		}
+		//Lanjut verifikasi untuk case tanggal dynamic yang di set jika
+		//tanggal yang dipilih berada di bulan yang berbeda
+		await page.locator('.day-cell:not(.bounding-month)').getByText(expectedDay,{exact: true}).click()
+		await expect(calendarInputField).toHaveValue(expectedDate)
+	})
 });
