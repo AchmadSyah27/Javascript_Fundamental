@@ -5,10 +5,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe("Form Layout Page", () => {
-	test.beforeEach(async ({ page }) => {
-		await page.getByText("Forms").click();
-		await page.getByText("Form Layouts").click();
-	});
+	//Kalau mau jalanin test sliders, script before each harus di comment dulu sebelum run
+	// test.beforeEach(async ({ page }) => {
+	// 	await page.getByText("Forms").click();
+	// 	await page.getByText("Form Layouts").click();
+	// });
 
 	test("Input fields", async ({ page }) => {
 		const usingTheGridEmailInput = page
@@ -256,5 +257,34 @@ test.describe("Form Layout Page", () => {
 		//tanggal yang dipilih berada di bulan yang berbeda
 		await page.locator('.day-cell:not(.bounding-month)').getByText(expectedDay,{exact: true}).click()
 		await expect(calendarInputField).toHaveValue(expectedDate)
+	})
+
+	test('Sliders', async ({page}) => {
+		//Cara pertama jika ada slider pada web aplikasi
+		//jika ingin running cara kedua, cara pertama harus di comment dulu
+		// const tempGauge = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle')
+		//Melakukan callback
+		// await tempGauge.evaluate( element => {
+		// 	element.setAttribute('cx', '232.630')
+		// 	element.setAttribute('cy', '232.630')
+		// })
+		//Lalu trigger supaya ke klik dan value-nya ter-setup
+		// await tempGauge.click()
+
+		//Cara kedua, dengan gerakan mouse
+		//dengan mendapatkan luas value dari persegi temperature lalu masukkan ke variable x dan y
+		const tempBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
+		await tempBox.scrollIntoViewIfNeeded()
+
+		const box = await tempBox.boundingBox()
+		const x = box?.x + box?.width /2
+		const y = box?.y + box?.height /2
+		await page.mouse.move(x, y)
+		await page.mouse.down()
+		await page.mouse.move(x+100, y) //gerak mouse ke kanan
+		await page.mouse.move(x+100, y+100) //gerak mouse ke kanan
+		await page.mouse.up()
+		//memastikan nilai setelah geser temperature
+		await expect(tempBox).toContainText('30')
 	})
 });
