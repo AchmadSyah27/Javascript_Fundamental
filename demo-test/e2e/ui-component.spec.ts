@@ -287,4 +287,16 @@ test.describe("Form Layout Page", () => {
 		//memastikan nilai setelah geser temperature
 		await expect(tempBox).toContainText('30')
 	})
+
+	test('Iframe', async ({page}) => {
+		await page.getByText('Modal & Overlays').click()
+		await page.getByText('Dialog').click()
+
+		//Melakukan interaksi dengan iFrame
+		//dengan cara attribute iFrame-nya kita temukan dulu lalu tentukan action apa yang akan kita lakukan berikutnya
+		const frameLocator = page.frameLocator('[data-cy="esc-close-iframe"]')
+
+		//action selanjutnya klik button 'Open Dialog with esc close'
+		await frameLocator.getByRole('button', {name: 'Open Dialog with esc close'}).click()
+	})
 });
