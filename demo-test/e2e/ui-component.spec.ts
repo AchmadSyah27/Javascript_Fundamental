@@ -299,4 +299,18 @@ test.describe("Form Layout Page", () => {
 		//action selanjutnya klik button 'Open Dialog with esc close'
 		await frameLocator.getByRole('button', {name: 'Open Dialog with esc close'}).click()
 	})
+
+	test('Drag & Drop', async ({page}) => {
+		await page.getByText('Extra Components').click()
+		await page.getByText('Drag & Drop').click()
+
+		//Melakukan drag & drop, cara pertama dengan menggunakan perintah dragTo
+		await page.getByText('Clean my room').dragTo(page.locator('#drop-list'))
+
+		//Cara kedua, 
+		await page.getByText('Get groceries').hover()
+		await page.mouse.down()
+		await page.locator('#drop-list').hover()
+		await page.mouse.up()
+	})
 });
