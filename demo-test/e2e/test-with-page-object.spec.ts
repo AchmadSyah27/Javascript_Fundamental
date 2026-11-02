@@ -23,4 +23,5 @@ test('Parameterized page object methods', async ({page}) => {
     //setelah berhasil ke halaman layout page, submit data di using the grid form
     await navigateTo.formLayoutsPage()
     await formLayoutsPage.submitUsingTheGridForm('andrian.soedjadi18@gmail.com', 'Pass123', 'Option 1')
+    await formLayoutsPage.submitInlineForm('Andrian Soedjadi', 'Andrian.Soedjadi18@gmail.com', true)
 })
