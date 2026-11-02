@@ -26,7 +26,7 @@ export class FormLayoutsPage{
         await inlineForm.getByRole("textbox", { name: "Jane Doe" }).fill(fullName)
         await inlineForm.getByRole("textbox", { name: "Email" }).fill(email)
         if(rememberMeCheckbox){
-            await inlineForm.getByRole('textbox').check({force: true})
+            await inlineForm.getByRole('checkbox').check({force: true})
         }
         await inlineForm.getByRole("button", { name: "Submit" }).click()
     }
