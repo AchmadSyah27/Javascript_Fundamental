@@ -15,6 +15,26 @@ export class DatepickerPage{
         const calendarInputField = this.page.getByPlaceholder('Form Picker')
 		await calendarInputField.click()
 
+        //Menggunakan metode private selectDateFromCalendar
+        const expectedDate = await this.selectDateFromCalendar(daysFromToday)
+        await expect(calendarInputField).toHaveValue(expectedDate)
+    }
+
+    async selectDatePickerWithRangeFromToday(daysFromTodayStart: number, daysFromTodayEnd:number){
+        const calendarInputField = this.page.getByPlaceholder('Range Picker')
+		await calendarInputField.click()
+
+        /**
+        * Dibawah ini kita gunakan kembali metode private selectDateFromCalendar
+        * Hanya saja bedanya kita akan menyesuaikan fungsinya untuk select date dengan range
+        */
+        const expectedDateStart = await this.selectDateFromCalendar(daysFromTodayStart)
+        const expectedDateEnd = await this.selectDateFromCalendar(daysFromTodayEnd)
+        const expectedRangeDate = `${expectedDateStart} - ${expectedDateEnd}`
+        await expect(calendarInputField).toHaveValue(expectedRangeDate)
+    }
+
+    private async selectDateFromCalendar(daysFromToday: number){
         const date = new Date()
 		date.setDate(date.getDate()+daysFromToday)
 		const expectedDay = date.getDate().toString()
@@ -32,7 +52,7 @@ export class DatepickerPage{
 			currentMonthAndYear = await this.page.locator('nb-calendar-view-mode').textContent()
 		}
 
-        await this.page.locator('.day-cell:not(.bounding-month)').getByText(expectedDay,{exact: true}).click()
-        await expect(calendarInputField).toHaveValue(expectedDate)
+        await this.page.locator('.day-cell:not(.bounding-month)').getByText(expectedDay, { exact: true }).click()
+        return expectedDate
     }
 }
