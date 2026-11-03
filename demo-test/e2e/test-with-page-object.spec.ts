@@ -27,5 +27,7 @@ test('Parameterized page object methods', async ({page}) => {
     await formLayoutsPage.submitUsingTheGridForm('andrian.soedjadi18@gmail.com', 'Pass123', 'Option 1')
     await formLayoutsPage.submitInlineForm('Andrian Soedjadi', 'Andrian.Soedjadi18@gmail.com', true)
     await navigateTo.datePickerPage()
+    //Melakukan panggil helper methode datepickerPage
     await datepickerPage.selectCommonDatepickerDateFromToday(5)
+    await datepickerPage.selectDatePickerWithRangeFromToday(1, 50)
 })
