@@ -1,11 +1,11 @@
 import { Page,expect } from "@playwright/test";
 import { step } from "../helpers/test-steps-decorator";
+import { HelperBase } from "./helper-base";
 
-export class DatepickerPage{
-    readonly page: Page
+export class DatepickerPage extends HelperBase{
 
     constructor(page: Page){
-        this.page = page
+        super(page)
     }
 
     @step
@@ -20,6 +20,7 @@ export class DatepickerPage{
         //Menggunakan metode private selectDateFromCalendar
         const expectedDate = await this.selectDateFromCalendar(daysFromToday)
         await expect(calendarInputField).toHaveValue(expectedDate)
+        await this.getToastrMessage()
     }
 
     @step

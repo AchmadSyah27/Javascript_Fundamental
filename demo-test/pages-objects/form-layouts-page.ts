@@ -1,11 +1,11 @@
 import { Page } from "@playwright/test";
 import { step } from "../helpers/test-steps-decorator";
+import { HelperBase } from "./helper-base";
 
-export class FormLayoutsPage{
-    readonly page: Page
+export class FormLayoutsPage extends HelperBase{
 
     constructor(page:Page){
-        this.page = page
+        super(page)
     }
 
     @step

@@ -1,18 +1,19 @@
 import { Page } from "@playwright/test";
 import { step } from "../helpers/test-steps-decorator";
+import { HelperBase } from "./helper-base";
 
-export class NavigationPage {
-
-    readonly page: Page
+export class NavigationPage extends HelperBase{
 
     constructor(page:Page){
-        this.page = page
+        super(page)
     }
     @step
     async formLayoutsPage(){
         //setelah pembuatan helper metode selectGroupMenuItem selesai, kita bisa panggil ke sini
         await this.selectGroupMenuItem('Forms')
         await this.page.getByText('Form Layouts').click()
+        const toasterMessage = await this.getToastrMessage()
+        console.log(`Toaster message: ${toasterMessage}`)
     }
 
     @step
