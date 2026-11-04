@@ -1,33 +1,29 @@
-import { expect, test } from "@playwright/test";
-import { NavigationPage } from "../pages-objects/navigation-page";
-import { FormLayoutsPage } from "../pages-objects/form-layouts-page";
-import { DatepickerPage} from "../pages-objects/date-picker-page";
+import { test } from "@playwright/test";
+import { PageManager } from "../pages-objects/page-manager";
 
 test.beforeEach(async ({ page }) => {
     await page.goto("https://playground.bondaracademy.com/");
 });
 
 test('Navigate to form layouts page', async ({page}) => {
-    const navigateTo = new NavigationPage(page)
-    await navigateTo.formLayoutsPage()
-    await navigateTo.datePickerPage()
-    await navigateTo.ToasterPage()
-    await navigateTo.TooltipPage()
-    await navigateTo.SmartTablePage()
+    const pom = new PageManager(page)
+    await pom.navigateTo.formLayoutsPage()
+    await pom.navigateTo.datePickerPage()
+    await pom.navigateTo.ToasterPage()
+    await pom.navigateTo.TooltipPage()
+    await pom.navigateTo.SmartTablePage()
 })
 
 test('Parameterized page object methods', async ({page}) => {
-    const navigateTo = new NavigationPage(page)
-    const formLayoutsPage = new FormLayoutsPage(page)
-    const datepickerPage = new DatepickerPage(page)
+    const pom = new PageManager(page)
 
     //Melakukan panggil helper methode form formLayoutsPage
     //setelah berhasil ke halaman layout page, submit data di using the grid form
-    await navigateTo.formLayoutsPage()
-    await formLayoutsPage.submitUsingTheGridForm('andrian.soedjadi18@gmail.com', 'Pass123', 'Option 1')
-    await formLayoutsPage.submitInlineForm('Andrian Soedjadi', 'Andrian.Soedjadi18@gmail.com', true)
-    await navigateTo.datePickerPage()
+    await pom.navigateTo.formLayoutsPage()
+    await pom.formLayoutsPage.submitUsingTheGridForm('andrian.soedjadi18@gmail.com', 'Pass123', 'Option 1')
+    await pom.formLayoutsPage.submitInlineForm('Andrian Soedjadi', 'Andrian.Soedjadi18@gmail.com', true)
+    await pom.navigateTo.datePickerPage()
     //Melakukan panggil helper methode datepickerPage
-    await datepickerPage.selectCommonDatepickerDateFromToday(5)
-    await datepickerPage.selectDatePickerWithRangeFromToday(1, 50)
+    await pom.datepickerPage.selectCommonDatepickerDateFromToday(5)
+    await pom.datepickerPage.selectDatePickerWithRangeFromToday(1, 50)
 })
