@@ -37,6 +37,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     headless: false, // Agar browser terbuka saat test dijalankan
+    video: 'on',
     
     launchOptions: {
       args: ['--start-maximized'], // Minta browser langsung terbuka penuh

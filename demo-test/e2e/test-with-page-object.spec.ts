@@ -24,7 +24,12 @@ test('Parameterized page object methods', async ({page}) => {
     //setelah berhasil ke halaman layout page, submit data di using the grid form
     await pom.navigateTo.formLayoutsPage()
     await pom.formLayoutsPage.submitUsingTheGridForm('andrian.soedjadi18@gmail.com', 'Pass123', 'Option 1')
-    await pom.formLayoutsPage.submitInlineForm(randomFullName, randomEmail, true)
+    await page.waitForTimeout(3000)
+    await page.screenshot({ path: 'screenshot/formLayoutPage.png'})
+    const formLayoutPageBuffer = await page.screenshot()
+    console.log(formLayoutPageBuffer.toString('base64'))
+    await pom.formLayoutsPage.submitInlineForm(randomFullName, randomEmail, false)
+    await page.locator('nb-card', { hasText: 'Inline form' }).screenshot({ path: 'screenshot/inlineForm.png'})
     await pom.navigateTo.datePickerPage()
     //Melakukan panggil helper methode datepickerPage
     await pom.datepickerPage.selectCommonDatepickerDateFromToday(5)
